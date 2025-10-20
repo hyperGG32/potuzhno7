@@ -31,7 +31,7 @@ def printMenu(variants: dict) -> None:
     """Prints out the price list of something"""
 
     if variants:
-        for i, (thing, price) in variants:
+        for i, (thing, price) in enumerate(variants.items(), 1):
             print(f"({i}: {thing} - {price}")
 
 def jumpToMain() -> None:
@@ -81,6 +81,7 @@ def main(back=False):
     else:
         print("Payment succesfull! Enjoy your drink!")
     time.sleep(5)
-    return main(back=True)
+    jumpToMain()
 
-main()
+if __name__ == "__main__":
+    main()
