@@ -13,7 +13,7 @@ def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, me
                 print(f"({i}: {thing} - {price})")
         userInput = input(f"{message}")
         if userInput == 'q':
-            print("GOODBYE!!!!")
+            print("Understood, exiting the program...")
             time.sleep(0.66)
             exit(0)
         if yesno:
@@ -48,14 +48,18 @@ def main(back=False):
     print(f"Welcome{" back" if back else ""}! Make your order, please.")
     time.sleep(0.5)
     coffee = safeInput(POSITIONS, positions=len(POSITIONS), message="Enter a number between 1 and 4, please: ")
-    additionsmaybe = safeInput(yesno=True, message="Any additions? (y/n)")
+    time.sleep(0.1)
+    additionsmaybe = safeInput(yesno=True, message="Any additions? (y/n): ")
+    time.sleep(0.2)
     additions = []
     if additionsmaybe:
         while True:
             additions.append(safeInput(ADDITIONS, positions=len(ADDITIONS), message="Order your additions ;) : "))
-            if safeInput(yesno=True, message="That's all? (y/n)"):
+            time.sleep(0.2)
+            if safeInput(yesno=True, message="That's all? (y/n): "):
                 break
     totalOrder = additions + [coffee]
+    time.sleep(0.2)
     print(f"For you to pay: {calculatePrice(POSITIONS, ADDITIONS, totalOrder)}$")
     time.sleep(randint(3, 6))
     if randint(0, 100) > 99:
