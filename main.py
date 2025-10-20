@@ -4,6 +4,8 @@ from random import randint, random
 from time import sleep
 
 def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, message: str = "") -> bool | str:
+    """Input(), but if something goes wrong, it doesn't break anything"""
+
 
     while True:
         if variants:
@@ -29,6 +31,9 @@ def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, me
 
 
 def calculatePrice(positions: dict, additions: dict, order: list[str]) -> float:
+
+    """Calculates a total price of an order"""
+
     totalPrice = 0
     for n in order:
         totalPrice += positions.get(n, 0) + additions.get(n, 0)
@@ -39,6 +44,7 @@ POSITIONS = {'americano': 2.35, "cappuccino": 3.75, "water": 0.2, "latte": 4}
 ADDITIONS = {"milk": 1.25, "veg_milk": 1.45, "syrop": 2.6, "sugar": 0.7}
 
 def main(back=False):
+    """The main program"""
     print(f"Welcome{" back" if back else ""}! Make your order, please.")
     time.sleep(0.5)
     coffee = safeInput(POSITIONS, positions=len(POSITIONS), message="Enter a number between 1 and 4, please: ")
