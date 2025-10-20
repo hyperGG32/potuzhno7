@@ -1,0 +1,64 @@
+# АВТОМАТ ДЛЯ КАВИИ!!!!!!!!!!!!!!
+import time
+from random import randint, random
+from time import sleep
+
+def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, message: str = "") -> bool | str:
+
+    while True:
+        if variants:
+            for i, (thing, price) in enumerate(variants.items(), 1):
+                print(f"({i}: {thing} - {price})")
+        userInput = input(f"{message}")
+        if userInput == 'q':
+            print("GOODBYE!!!!")
+            time.sleep(0.66)
+            exit(0)
+        if yesno:
+            return userInput == 'y'
+        try:
+            userInput = int(userInput)
+        except ValueError:
+            print(f"Enter a number between 1 and {positions}!")
+            continue
+
+        if 1 <= userInput <= positions:
+            return list(variants)[userInput-1]
+
+        print(f"Enter a number between 1 and {positions}")
+
+
+def calculatePrice(positions: dict, additions: dict, order: list[str]) -> float:
+    totalPrice = 0
+    for n in order:
+        totalPrice += positions.get(n, 0) + additions.get(n, 0)
+    return totalPrice
+
+
+POSITIONS = {'americano': 2.35, "cappuccino": 3.75, "water": 0.2, "latte": 4}
+ADDITIONS = {"milk": 1.25, "veg_milk": 1.45, "syrop": 2.6, "sugar": 0.7}
+
+def main(back=False):
+    print(f"Welcome{" back" if back else ""}! Make your order, please.")
+    time.sleep(0.5)
+    coffee = safeInput(POSITIONS, positions=len(POSITIONS), message="Enter a number between 1 and 4, please: ")
+    additionsmaybe = safeInput(yesno=True, message="Any additions? (y/n)")
+    additions = []
+    if additionsmaybe:
+        while True:
+            additions.append(safeInput(ADDITIONS, positions=len(ADDITIONS), message="Order your additions ;) : "))
+            if safeInput(yesno=True, message="That's all? (y/n)"):
+                break
+    totalOrder = additions + [coffee]
+    print(f"For you to pay: {calculatePrice(POSITIONS, ADDITIONS, totalOrder)}$")
+    time.sleep(randint(3, 6))
+    if randint(0, 100) > 99:
+        print("OOPS! Payment failed! No drink for you today >:)")
+        time.sleep(3)
+        exit(1)
+    else:
+        print("Payment succesfull! Enjoy your drink!")
+    time.sleep(5)
+    return main(back=True)
+
+main()
