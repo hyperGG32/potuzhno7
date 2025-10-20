@@ -1,21 +1,17 @@
 # АВТОМАТ ДЛЯ КАВИИ!!!!!!!!!!!!!!
 import time
-from random import randint, random
+from random import randint
 from time import sleep
 
-def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, message: str = "") -> bool | str:
+def safeInput(variants: dict = None, yesno: bool = False, message: str = "") -> bool | str:
     """Input(), but if something goes wrong, it doesn't break anything"""
 
-
+    positions = len(variants) if variants else 0
     while True:
-        if variants:
-            for i, (thing, price) in enumerate(variants.items(), 1):
-                print(f"({i}: {thing} - {price})")
+        printMenu(variants)
         userInput = input(f"{message}")
         if userInput == 'q':
-            print("Understood, exiting the program...")
-            time.sleep(0.66)
-            exit(0)
+            jumpToMain()
         if yesno:
             return userInput == 'y'
         try:
@@ -29,6 +25,22 @@ def safeInput(variants: dict = None, yesno: bool = False, positions: int = 3, me
 
         print(f"Enter a number between 1 and {positions}")
 
+
+def printMenu(variants: dict) -> None:
+
+    """Prints out the price list of something"""
+
+    if variants:
+        for i, (thing, price) in variants:
+            print(f"({i}: {thing} - {price}")
+
+def jumpToMain() -> None:
+
+    """Jumps back to the beginning of the program"""
+
+    print("Returning to main menu...")
+    time.sleep(0.5)
+    return main(back=True)
 
 def calculatePrice(positions: dict, additions: dict, order: list[str]) -> float:
 
@@ -47,16 +59,16 @@ def main(back=False):
     """The main program"""
     print(f"Welcome{" back" if back else ""}! Make your order, please.")
     time.sleep(0.5)
-    coffee = safeInput(POSITIONS, positions=len(POSITIONS), message="Enter a number between 1 and 4, please: ")
+    coffee = safeInput(POSITIONS, message="Enter a number between 1 and 4, please: ")
     time.sleep(0.1)
     additionsmaybe = safeInput(yesno=True, message="Any additions? (y/n): ")
     time.sleep(0.2)
     additions = []
     if additionsmaybe:
         while True:
-            additions.append(safeInput(ADDITIONS, positions=len(ADDITIONS), message="Order your additions ;) : "))
+            additions.append(safeInput(ADDITIONS, message="Order your additions ;) : "))
             time.sleep(0.2)
-            if safeInput(yesno=True, message="That's all? (y/n): "):
+            if not safeInput(yesno=True, message="More? (y/n): "):
                 break
     totalOrder = additions + [coffee]
     time.sleep(0.2)
