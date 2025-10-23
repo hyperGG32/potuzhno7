@@ -3,6 +3,8 @@ import time
 from random import randint
 from time import sleep
 
+class jumpBackToMain(Exception): pass
+
 def safeInput(variants: dict = None, yesno: bool = False, message: str = "") -> bool | str:
     """Input(), but if something goes wrong, it doesn't break anything"""
 
@@ -12,6 +14,10 @@ def safeInput(variants: dict = None, yesno: bool = False, message: str = "") -> 
         userInput = input(f"{message}")
         if userInput == 'q':
             jumpToMain()
+        if userInput == 'ihatecoffee':
+            print("ok, then no coffee for you >:)))")
+            time.sleep(0.5)
+            exit(0)
         if yesno:
             return userInput == 'y'
         try:
@@ -32,7 +38,7 @@ def printMenu(variants: dict) -> None:
 
     if variants:
         for i, (thing, price) in enumerate(variants.items(), 1):
-            print(f"({i}: {thing} - {price}")
+            print(f"({i}: {thing} - {price})")
 
 def jumpToMain() -> None:
 
@@ -40,7 +46,7 @@ def jumpToMain() -> None:
 
     print("Returning to main menu...")
     time.sleep(0.5)
-    return main(back=True)
+    raise jumpBackToMain
 
 def calculatePrice(positions: dict, additions: dict, order: list[str]) -> float:
 
@@ -81,7 +87,12 @@ def main(back=False):
     else:
         print("Payment succesfull! Enjoy your drink!")
     time.sleep(5)
-    jumpToMain()
 
 if __name__ == "__main__":
-    main()
+    while True:
+        try:
+            main()
+        except jumpBackToMain:
+            pass
+        except KeyboardInterrupt:
+            pass
