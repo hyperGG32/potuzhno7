@@ -50,20 +50,33 @@ def jumpToMain() -> None:
 
 def calculatePrice(positions: dict, additions: dict, order: list[str]) -> float:
 
-    """Calculates a total price of an order"""
+    """Calculates a total price of an order logs it"""
 
     totalPrice = 0
     for n in order:
         totalPrice += positions.get(n, 0) + additions.get(n, 0)
+    logEvent(f"Customer bought {order} for {totalPrice}$")
     return totalPrice
 
 
 POSITIONS = {'americano': 2.35, "cappuccino": 3.75, "water": 0.2, "latte": 4}
 ADDITIONS = {"milk": 1.25, "veg_milk": 1.45, "syrop": 2.6, "sugar": 0.7}
 
-def main(back=False):
+def logEvent(event: str) -> None:
+
+    """Logs any event you want in a simple txt file"""
+
+    if not event:
+        return
+    logFile = open("log.txt", "a+")
+    if event.endswith('\n'):
+        logFile.write(event)
+        return
+    logFile.write(event + '\n')
+
+def main():
     """The main program"""
-    print(f"Welcome{" back" if back else ""}! Make your order, please.")
+    print(f"Welcome! Make your order, please.")
     time.sleep(0.5)
     coffee = safeInput(POSITIONS, message="Enter a number between 1 and 4, please: ")
     time.sleep(0.1)
