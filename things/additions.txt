@@ -1,0 +1,4 @@
+milk 0,7 # price is written in coma
+vegan_milk 0.9 anything can be written here
+syrop 1 it will be ignored
+choc_chips 1.3
